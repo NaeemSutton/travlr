@@ -21,9 +21,9 @@ export class AddTripComponent implements OnInit {
     private tripService: TripDataService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.addForm = this.formBuilder.group({
-      _id: [''],
+      _id: [],
       code: ['', Validators.required],
       name: ['', Validators.required],
       length: ['', Validators.required],
@@ -31,13 +31,12 @@ export class AddTripComponent implements OnInit {
       resort: ['', Validators.required],
       perPerson: ['', Validators.required],
       image: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
     });
   }
 
-  public onSubmit(): void {
+  public onSubmit() {
     this.submitted = true;
-
     if (this.addForm.valid) {
       this.tripService.addTrip(this.addForm.value).subscribe({
         next: (data: any) => {
@@ -51,7 +50,5 @@ export class AddTripComponent implements OnInit {
     }
   }
 
-  get f() {
-    return this.addForm.controls;
-  }
+  get f() { return this.addForm.controls; }
 }

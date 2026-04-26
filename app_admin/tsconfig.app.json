@@ -8,7 +8,7 @@
   },
   "include": [
     "src/**/*.ts"
-  ],
+, "auth-response.spec.ts"  ],
   "exclude": [
     "src/**/*.spec.ts"
   ]

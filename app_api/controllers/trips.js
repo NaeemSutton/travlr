@@ -45,8 +45,37 @@ const tripsAddTrip = async (req, res) => {
   }
 };
 
+// PUT: /trips/:tripCode → update a trip
+const tripsUpdateTrip = async (req, res) => {
+  try {
+    const q = await Trip.findOneAndUpdate(
+      { code: req.params.tripCode },
+      {
+        code: req.body.code,
+        name: req.body.name,
+        length: req.body.length,
+        start: req.body.start,
+        resort: req.body.resort,
+        perPerson: req.body.perPerson,
+        image: req.body.image,
+        description: req.body.description
+      },
+      { new: true }
+    ).exec();
+
+    if (!q) {
+      return res.status(404).json({ message: "tripCode not found" });
+    } else {
+      return res.status(201).json(q);
+    }
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+};
+
 module.exports = {
   tripsList,
   tripsFindByCode,
-  tripsAddTrip
+  tripsAddTrip,
+  tripsUpdateTrip
 };

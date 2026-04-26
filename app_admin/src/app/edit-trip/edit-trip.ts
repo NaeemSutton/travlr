@@ -16,7 +16,7 @@ export class EditTripComponent implements OnInit {
   public editForm!: FormGroup;
   trip!: Trip;
   submitted = false;
-  message = '';
+  message: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,7 +25,7 @@ export class EditTripComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const tripCode = localStorage.getItem('tripCode');
+    let tripCode = localStorage.getItem('tripCode');
     if (!tripCode) {
       alert("Something wrong, couldn't find where I stashed tripCode!");
       this.router.navigate(['']);
@@ -33,7 +33,7 @@ export class EditTripComponent implements OnInit {
     }
 
     this.editForm = this.formBuilder.group({
-      _id: [''],
+      _id: [],
       code: [tripCode, Validators.required],
       name: ['', Validators.required],
       length: ['', Validators.required],
@@ -48,11 +48,7 @@ export class EditTripComponent implements OnInit {
       next: (value: any) => {
         this.trip = value;
         this.editForm.patchValue(value[0]);
-        if (!value) {
-          this.message = 'No Trip Retrieved!';
-        } else {
-          this.message = 'Trip: ' + tripCode + ' retrieved';
-        }
+        this.message = !value ? 'No Trip Retrieved!' : 'Trip: ' + tripCode + ' retrieved';
         console.log(this.message);
       },
       error: (error: any) => {
@@ -61,9 +57,8 @@ export class EditTripComponent implements OnInit {
     });
   }
 
-  public onSubmit(): void {
+  public onSubmit() {
     this.submitted = true;
-
     if (this.editForm.valid) {
       this.tripDataService.updateTrip(this.editForm.value).subscribe({
         next: (value: any) => {
@@ -77,7 +72,5 @@ export class EditTripComponent implements OnInit {
     }
   }
 
-  get f() {
-    return this.editForm.controls;
-  }
+  get f() { return this.editForm.controls; }
 }
